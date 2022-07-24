@@ -9,7 +9,7 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
 # Expose port 8080 
-EXPOSE 80
+EXPOSE 8080
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0

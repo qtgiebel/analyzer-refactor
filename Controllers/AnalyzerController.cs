@@ -29,16 +29,21 @@ public class AnalyzerController : Controller
     [HttpPost]
     public IActionResult Analyze(IFormFile file)
     {
-        if (!ModelState.IsValid)
-        {
-            return Error();
-        }
+        // if (!ModelState.IsValid)
+        // {
+        //     return Error();
+        // }
 
         if (System.IO.Path.GetExtension(file.FileName).Substring(1) != _fileFormat)
         {
             return Error();
         }
 
+        return View();
+    }
+
+    private List<string> CreateTokenList(IFormFile file)
+    {
         Stream fileStream = file.OpenReadStream();
         List<string> tokens = new List<string>();
         string pattern = "\\W";
@@ -46,14 +51,16 @@ public class AnalyzerController : Controller
 
         using (StreamReader reader = new StreamReader(fileStream))
         {
-            string line = "";
+            string? line = "";
             while ((line = reader.ReadLine()) != null)
             {
                 string[] splitLine = rgx.Split(line);
+                _logger.LogInformation($"Tokens:");
                 foreach (var word in splitLine)
                 {
-                    if (!String.IsNullOrWhiteSpace(word) && !String.IsNullOrEmpty(word))
+                    if (!String.IsNullOrWhiteSpace(word))
                     {
+                        _logger.LogInformation(word);
                         tokens.Add(word);
                     }
                 }
@@ -61,7 +68,7 @@ public class AnalyzerController : Controller
             reader.Close();
         }
 
-        return View(new InputFileModel());
+        return tokens;
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

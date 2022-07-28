@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-
 /**
     Analyzes the tokens inputed to determine which of them are distinct.
 */
-class DistinctTokensAnalyzer : TokenAnalyzer
+class DistinctTokenAnalyzer : ITokenAnalyzer
 {
     private SortedSet<string> distinctTokens { get; set; }
 
@@ -11,7 +9,7 @@ class DistinctTokensAnalyzer : TokenAnalyzer
         Initializes an empty list for the distinct tokens. 
         The set will always be initialized empty and be populated while running.
     */
-    public DistinctTokensAnalyzer() => distinctTokens = new SortedSet<string>();
+    public DistinctTokenAnalyzer() => distinctTokens = new SortedSet<string>();
 
     /* 
         Adds the current token to the list if it is not already present.

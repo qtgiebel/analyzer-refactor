@@ -1,10 +1,20 @@
+@model InputFileModel
 @{
     ViewData["Title"] = "Analyzer";
 }
 
 <div class="text-center">
-    <form action="" method="post" enctype="multipart/form-data">
-        <input type="file" name="inputFile" id="inputFile">
-        <button type="submit">Analyze</button>
+
+    <form enctype="multipart/form-data" method="post">
+        <dl>
+            <dt>
+                <label asp-for="uploadFile">Upload:</label>
+            </dt>
+            <dd>
+                <input asp-for="uploadFile" type="file">
+                <span asp-validation-for="uploadFile">You must upload a .txt file.</span>
+            </dd>
+        </dl>
+        <button asp-action="Analyze" type="submit" value="Analyze">Analyze</button>
     </form>
 </div>

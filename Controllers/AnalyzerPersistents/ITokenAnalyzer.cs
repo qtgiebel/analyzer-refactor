@@ -1,5 +1,5 @@
 interface ITokenAnalyzer
 {
-    void processToken(string token);
+    void process(string token);
     void generateOutputFile(string filePath);
 }

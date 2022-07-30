@@ -14,7 +14,7 @@ class DistinctTokenAnalyzer : ITokenAnalyzer
     /* 
         Adds the current token to the list if it is not already present.
     */
-    public void processToken(string token) => distinctTokens.Add(token);
+    public void process(string token) => distinctTokens.Add(token);
 
     /*
         Generate the output file.

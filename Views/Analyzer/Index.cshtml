@@ -11,7 +11,7 @@
                 <label asp-for="uploadFile">Upload:</label>
             </dt>
             <dd>
-                <input asp-for="uploadFile" type="file">
+                <input asp-for="uploadFile" type="file" required>
                 <span asp-validation-for="uploadFile">You must upload a .txt file.</span>
             </dd>
         </dl>

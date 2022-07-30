@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using analyzer_refactor.Models;
@@ -9,7 +10,7 @@ public class AnalyzerController : Controller
 {
 
     private readonly ILogger<AnalyzerController> _logger;
-    private readonly string _fileFormat = ".txt";
+    private readonly string[] _fileFormats = { "txt" };
 
     private List<ITokenAnalyzer> analyzers;
 
@@ -17,7 +18,8 @@ public class AnalyzerController : Controller
     {
         _logger = logger;
         analyzers = new List<ITokenAnalyzer> {
-            new DistinctTokenAnalyzer()
+            new DistinctTokenAnalyzer(),
+            new FileSummaryAnalyzer()
         };
 
     }
@@ -27,19 +29,29 @@ public class AnalyzerController : Controller
     }
 
     [HttpPost]
-    public IActionResult Analyze(IFormFile file)
+    public IActionResult Analyze(IFormFile uploadFile)
     {
-        // if (!ModelState.IsValid)
-        // {
-        //     return Error();
-        // }
-
-        if (System.IO.Path.GetExtension(file.FileName).Substring(1) != _fileFormat)
+        if (!ModelState.IsValid)
         {
             return Error();
         }
 
-        return View();
+        if (!_fileFormats.Contains(System.IO.Path.GetExtension(uploadFile.FileName).Substring(1)))
+        {
+            return View("Index");
+        }
+
+        List<string> tokens = CreateTokenList(uploadFile);
+        foreach (ITokenAnalyzer analyzer in analyzers)
+        {
+            foreach (string token in tokens)
+            {
+                analyzer.process(token);
+            }
+        }
+
+        return View("Index");
+        // return View();
     }
 
     private List<string> CreateTokenList(IFormFile file)
@@ -55,12 +67,10 @@ public class AnalyzerController : Controller
             while ((line = reader.ReadLine()) != null)
             {
                 string[] splitLine = rgx.Split(line);
-                _logger.LogInformation($"Tokens:");
                 foreach (var word in splitLine)
                 {
                     if (!String.IsNullOrWhiteSpace(word))
                     {
-                        _logger.LogInformation(word);
                         tokens.Add(word);
                     }
                 }
@@ -74,6 +84,6 @@ public class AnalyzerController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View("Index", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

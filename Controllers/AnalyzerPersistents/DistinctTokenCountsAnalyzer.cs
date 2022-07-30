@@ -1,7 +1,7 @@
 /* Keeps a tally of the number of times each distinct token is repeated. */
 class DistinctTokenCountsAnalyzer : ITokenAnalyzer
 {
-    private Dictionary<string, int> distinctTokens { get; set; }
+    private Dictionary<string, int> distinctTokens { get; }
 
     /* Initializes an empty dictionary to record the distinct tokens. */
     public DistinctTokenCountsAnalyzer() => distinctTokens = new Dictionary<string, int>();

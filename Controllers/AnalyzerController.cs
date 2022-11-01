@@ -32,23 +32,15 @@ public class AnalyzerController : Controller
     public IActionResult Analyze(IFormFile uploadFile)
     {
         if (!ModelState.IsValid)
-        {
             return Error();
-        }
 
         if (!_fileFormats.Contains(System.IO.Path.GetExtension(uploadFile.FileName).Substring(1)))
-        {
             return View("Index");
-        }
 
         List<string> tokens = CreateTokenList(uploadFile);
         foreach (ITokenAnalyzer analyzer in analyzers)
-        {
             foreach (string token in tokens)
-            {
                 analyzer.process(token);
-            }
-        }
 
         return View("Index");
         // return View();
@@ -68,12 +60,8 @@ public class AnalyzerController : Controller
             {
                 string[] splitLine = rgx.Split(line);
                 foreach (var word in splitLine)
-                {
                     if (!String.IsNullOrWhiteSpace(word))
-                    {
                         tokens.Add(word);
-                    }
-                }
             }
             reader.Close();
         }

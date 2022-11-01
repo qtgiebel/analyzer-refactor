@@ -20,7 +20,7 @@ class DistinctTokenCountsAnalyzer : ITokenAnalyzer
     }
 
     /*  */
-    public void generateOutputFile(string filePath)
+    public void report(string filePath)
     {
         throw new NotImplementedException();
     }

@@ -19,7 +19,7 @@ class FileSummaryAnalyzer : ITokenAnalyzer
     /*
         Generate the output file.
     */
-    public void generateOutputFile(string filePath)
+    public void report(string filePath)
     {
 
     }

@@ -22,6 +22,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//if app.UseAuthentication, must come before 
 app.UseAuthorization();
 
 app.MapControllerRoute(
